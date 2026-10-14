@@ -91,6 +91,9 @@ Route::middleware('auth')->group(function () {
 
 ![Halaman Login](login.png)
 
+### Halaman LaraPress
+![Halaman Setelah Login](dashboard-LaraPress.png)
+
 ### Halaman Setelah Login
 
 ![Halaman Setelah Login](dashboard-login.png)
