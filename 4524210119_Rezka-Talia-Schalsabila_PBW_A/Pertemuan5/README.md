@@ -130,13 +130,20 @@ Berikut adalah beberapa tampilan antarmuka dari aplikasi yang telah dibuat:
 
 Menampilkan daftar kegiatan terbaru. Jika belum ada data, akan muncul pesan *"Belum Ada Kegiatan"*.
 
-![Halaman Home](screenshots/home.png)
+![Halaman Home](home(2).png)
 
 ### 2. Halaman Register
 
 Halaman pendaftaran akun baru menggunakan **Laravel Breeze**.
 
-![Halaman Register](screenshots/register.png)
+![Halaman Register](register(2).png)
+
+### 2. Halaman Login
+
+Halaman Login menggunakan **Laravel Breeze**.
+
+![Halaman Login](login(2).png)
+
 
 ### 3. Halaman Dashboard Admin
 
