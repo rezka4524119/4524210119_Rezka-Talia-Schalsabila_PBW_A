@@ -178,4 +178,4 @@ Praktikum ini berhasil mengimplementasikan fitur **manajemen konten** dan **Buku
 ---
 
 
-> 📝 **Catatan:** Jangan lupa untuk menaruh file screenshot di folder `screenshots/` agar gambar dapat tampil di README GitHub.
+
