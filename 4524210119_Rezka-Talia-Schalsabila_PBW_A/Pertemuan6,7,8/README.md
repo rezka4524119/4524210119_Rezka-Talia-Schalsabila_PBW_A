@@ -9,8 +9,8 @@ Membangun Aplikasi Manajemen Buku dengan Laravel & Filament 3.x
 | **NIM** | 4524210119 |
 | **Kelas** | A |
 | **Mata Kuliah** | Pemrograman Berbasis Web |
-| **Dosen Pengampu** | Adi Wahyu Pribadi, S.Si., M.Kom |
-| **Semester** | Gasal 2025-2026 |
+| **Dosen Pengampu** |Bambang Riono Arsad, S.Kom., MMSI|
+
 
 ---
 
