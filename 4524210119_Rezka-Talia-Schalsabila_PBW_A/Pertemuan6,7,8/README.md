@@ -287,7 +287,7 @@ Melalui Filament, proses pengelolaan data dapat dilakukan menggunakan halaman ad
 
 **Simpan gambar dengan nama:** `03-list-books.png`
 
-![List Books](List Books.png)
+![Login Admin](./Login%20Admin.jpeg)
 
 ### 📸 Screenshot 4 – Form Create Book
 
