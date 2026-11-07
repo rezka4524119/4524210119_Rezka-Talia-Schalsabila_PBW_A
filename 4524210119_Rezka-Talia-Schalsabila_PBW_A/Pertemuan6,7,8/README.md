@@ -252,14 +252,6 @@ Pada halaman ini terdapat navigasi menuju fitur-fitur administrasi seperti penge
 
 ### 📸 Screenshot 2 – Dashboard Filament
 
-**Cara mengambil screenshot:**
-
-1. Login ke admin panel.
-2. Pastikan halaman dashboard sudah terbuka.
-3. Ambil screenshot halaman dashboard secara keseluruhan.
-
-**Simpan gambar dengan nama:** `02-dashboard-filament.png`
-
 ![Dashboard Filament](DashboardFilament.jpeg)
 
 ## 4. Pengelolaan Data Buku (CRUD)
@@ -277,28 +269,10 @@ Melalui Filament, proses pengelolaan data dapat dilakukan menggunakan halaman ad
 
 ### 📸 Screenshot 3 – List Books
 
-**Cara mengambil screenshot:**
-
-1. Masuk ke dashboard Filament.
-2. Pilih menu Books.
-3. Pastikan daftar buku sudah muncul.
-4. Tampilkan beberapa data buku hasil seeder.
-5. Ambil screenshot tabel daftar buku.
-
-**Simpan gambar dengan nama:** `03-list-books.png`
 
 ![List Book](ListBook.jpeg)
 
 ### 📸 Screenshot 4 – Form Create Book
-
-**Cara mengambil screenshot:**
-
-1. Masuk ke menu Books.
-2. Klik tombol Create atau Create Book.
-3. Pastikan formulir penambahan buku terbuka.
-4. Ambil screenshot formulir tersebut.
-
-**Simpan gambar dengan nama:** `04-create-book.png`
 
 ![Create Book](CreateBook.jpeg)
 
@@ -310,16 +284,6 @@ Dengan fitur ini, administrator tidak perlu mencari data secara manual satu per 
 
 ### 📸 Screenshot 5 – Search Book
 
-**Cara mengambil screenshot:**
-
-1. Masuk ke halaman List Books.
-2. Cari kolom pencarian.
-3. Masukkan judul atau informasi buku yang ingin dicari.
-4. Pastikan hasil pencarian sesuai dengan kata kunci.
-5. Ambil screenshot hasil pencarian.
-
-**Simpan gambar dengan nama:** `05-search-book.png`
-
 ![Search Book](SearchBook.jpeg)
 
 ## 6. Fitur Filter Buku
@@ -330,16 +294,6 @@ Fitur ini membantu administrator menampilkan data yang lebih spesifik sesuai keb
 
 ### 📸 Screenshot 6 – Filter Book
 
-**Cara mengambil screenshot:**
-
-1. Buka halaman List Books.
-2. Klik bagian Filter.
-3. Pilih salah satu kriteria filter.
-4. Terapkan filter.
-5. Pastikan tabel menampilkan hasil sesuai filter yang dipilih.
-6. Ambil screenshot.
-
-**Simpan gambar dengan nama:** `06-filter-book.png`
 
 ![Filter Book](FilterBook.jpeg)
 
