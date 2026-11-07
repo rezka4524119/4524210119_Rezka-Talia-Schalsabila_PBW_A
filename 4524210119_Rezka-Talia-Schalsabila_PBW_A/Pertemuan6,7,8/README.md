@@ -242,7 +242,7 @@ Melalui admin panel, pengguna yang memiliki hak akses dapat masuk dan melakukan 
 
 ### 📸 Screenshot 1 – Login Admin
 
-![Login Admin](LoginAdmin.png)
+![Login Admin](LoginAdmin.jpeg)
 
 ## 3. Dashboard Filament
 
