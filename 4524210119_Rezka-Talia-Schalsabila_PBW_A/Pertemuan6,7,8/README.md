@@ -260,7 +260,7 @@ Pada halaman ini terdapat navigasi menuju fitur-fitur administrasi seperti penge
 
 **Simpan gambar dengan nama:** `02-dashboard-filament.png`
 
-![Dashboard Filament](Dashboard Filament.png)
+![Dashboard Filament](DashboardFilament.jpeg)
 
 ## 4. Pengelolaan Data Buku (CRUD)
 
@@ -287,7 +287,7 @@ Melalui Filament, proses pengelolaan data dapat dilakukan menggunakan halaman ad
 
 **Simpan gambar dengan nama:** `03-list-books.png`
 
-![Login Admin](./Login%20Admin.jpeg)
+![List Book](ListBook.jpeg)
 
 ### 📸 Screenshot 4 – Form Create Book
 
@@ -300,7 +300,7 @@ Melalui Filament, proses pengelolaan data dapat dilakukan menggunakan halaman ad
 
 **Simpan gambar dengan nama:** `04-create-book.png`
 
-![Create Book](Create Book.png)
+![Create Book](CreateBook.jpeg)
 
 ## 5. Fitur Pencarian Buku
 
@@ -320,7 +320,7 @@ Dengan fitur ini, administrator tidak perlu mencari data secara manual satu per 
 
 **Simpan gambar dengan nama:** `05-search-book.png`
 
-![Search Book](Search Book.png)
+![Search Book](SearchBook.jpeg)
 
 ## 6. Fitur Filter Buku
 
@@ -341,7 +341,7 @@ Fitur ini membantu administrator menampilkan data yang lebih spesifik sesuai keb
 
 **Simpan gambar dengan nama:** `06-filter-book.png`
 
-![Filter Book](Filter Book.png)
+![Filter Book](FilterBook.jpeg)
 
 ---
 
