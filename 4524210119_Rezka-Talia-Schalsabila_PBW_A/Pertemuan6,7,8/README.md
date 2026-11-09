@@ -337,14 +337,6 @@ Dengan penambahan fitur ini, setiap buku dapat memiliki informasi tambahan yang 
 
 ### 📸 Screenshot 7 – Book Description
 
-**Cara mengambil screenshot:**
-
-1. Masuk ke menu Books.
-2. Klik Create Book atau Edit salah satu buku.
-3. Pastikan kolom Description sudah muncul.
-4. Ambil screenshot formulir yang menampilkan kolom Description.
-
-**Simpan gambar dengan nama:** `07-book-description.png`
 
 ![Book Description](BookDescription.jpeg)
 
@@ -372,15 +364,6 @@ Tahapan pengembangan RBAC meliputi:
 
 ### 📸 Screenshot 8 – Role Users
 
-**Cara mengambil screenshot:**
-
-1. Buka halaman atau database tempat data pengguna tersimpan.
-2. Tampilkan beberapa akun pengguna.
-3. Pastikan kolom role terlihat.
-4. Tampilkan akun admin, staff, dan viewer.
-5. Ambil screenshot.
-
-**Simpan gambar dengan nama:** `08-role-users.png`
 
 ![Role Users](RoleUsers.jpeg)
 
@@ -406,15 +389,6 @@ Informasi tersebut dapat ditampilkan melalui statistik atau grafik sesuai implem
 
 ### 📸 Screenshot 9 – Dashboard Widget
 
-**Cara mengambil screenshot:**
-
-1. Login sebagai administrator.
-2. Buka halaman dashboard.
-3. Pastikan widget statistik sudah tampil.
-4. Pastikan informasi total buku, total penulis, dan status ketersediaan terlihat.
-5. Ambil screenshot.
-
-**Simpan gambar dengan nama:** `09-dashboard-widget.png`
 
 ![Dashboard Widget](Dashboardwidget.jpeg)
 
@@ -434,28 +408,11 @@ Relasi many-to-many memungkinkan satu buku memiliki lebih dari satu kategori dan
 
 ### 📸 Screenshot 10 – Data Kategori
 
-**Cara mengambil screenshot:**
-
-1. Masuk ke menu Categories jika tersedia.
-2. Tampilkan daftar kategori yang sudah dibuat.
-3. Ambil screenshot daftar kategori.
-
-**Simpan gambar dengan nama:** `10-category.png`
 
 ![Data Category](DataCategory.jpeg)
 
 ### 📸 Screenshot 11 – Kategori pada Form Buku
 
-**Cara mengambil screenshot:**
-
-1. Buka menu Books.
-2. Klik Create atau Edit.
-3. Cari bagian Categories.
-4. Pastikan multiple select kategori sudah tersedia.
-5. Pilih beberapa kategori jika memungkinkan.
-6. Ambil screenshot.
-
-**Simpan gambar dengan nama:** `11-book-category.png`
 
 ![Book Category](BookCategory.jpeg)
 
