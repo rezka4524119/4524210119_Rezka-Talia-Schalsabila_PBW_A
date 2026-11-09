@@ -419,54 +419,38 @@ Relasi many-to-many memungkinkan satu buku memiliki lebih dari satu kategori dan
 ---
 
 # 📊 PERTEMUAN 8 – ANALISIS DAN DOKUMENTASI
+---
 
 ## 1. Penjelasan Arsitektur Aplikasi
 
-Aplikasi manajemen buku dikembangkan menggunakan arsitektur Laravel yang memisahkan tanggung jawab antara routing, controller atau resource, model, database, dan view.
-
-Pada aplikasi ini Filament membantu menangani kebutuhan antarmuka administrasi dan proses pengelolaan data.
+Aplikasi dikembangkan dengan arsitektur Laravel (pola MVC) yang memisahkan tanggung jawab antara routing, middleware, resource/controller, model, database, dan view. Filament dipakai untuk membangun antarmuka administrasi dan proses pengelolaan data (CRUD) tanpa menulis controller dan view secara manual.
 
 ### Komponen Arsitektur
 
-**a. Routing**
+| Komponen | Fungsi |
+|---|---|
+| **a. Routing** | Mengatur URL yang dipakai untuk mengakses aplikasi. Route panel admin didaftarkan otomatis oleh Filament melalui `AdminPanelProvider`. |
+| **b. Middleware** | Memeriksa request sebelum diproses, misalnya session, CSRF, dan autentikasi (apakah pengguna sudah login). |
+| **c. Model (Eloquent ORM)** | Merepresentasikan tabel database dan mendefinisikan relasi antar tabel (`Author`, `Book`, `Category`, `User`). |
+| **d. Migration** | Membuat dan mengubah struktur tabel secara bertahap dan terversi (contoh: kolom `role` dan `description` ditambahkan lewat migration tersendiri). |
+| **e. Factory dan Seeder** | Factory menghasilkan data dummy, seeder memasukkan data awal ke database. |
+| **f. Filament Resource** | Mendefinisikan halaman pengelolaan data (daftar, tambah, edit, hapus) lewat satu kelas yang berisi `form()` dan `table()`. |
+| **g. Policy** | Mengatur hak akses pengguna berdasarkan kolom `role` (admin, staff, viewer). |
+| **h. Database** | Menyimpan seluruh data aplikasi. |
 
-Routing berfungsi mengatur alamat atau URL yang digunakan untuk mengakses aplikasi.
-
-**b. Model**
-
-Model digunakan untuk merepresentasikan tabel database dan mengatur relasi antar tabel menggunakan Eloquent ORM.
-
-**c. Migration**
-
-Migration digunakan untuk membuat dan mengubah struktur tabel database.
-
-**d. Factory dan Seeder**
-
-Factory digunakan untuk menghasilkan data dummy, sedangkan seeder digunakan untuk memasukkan data awal ke database.
-
-**e. Filament Resource**
-
-Resource digunakan untuk membuat halaman pengelolaan data seperti daftar buku, formulir tambah buku, edit buku, dan penghapusan data.
-
-**f. Policy**
-
-Policy digunakan untuk mengatur hak akses pengguna berdasarkan role.
-
-**g. Database**
-
-Database digunakan untuk menyimpan seluruh informasi yang dibutuhkan aplikasi.
+---
 
 ## 2. Diagram ERD (Entity Relationship Diagram)
 
-ERD merupakan diagram yang menggambarkan hubungan antar entitas atau tabel dalam sebuah database.
+ERD menggambarkan hubungan antar entitas (tabel) dalam database.
 
-Pada aplikasi manajemen buku, entitas utama yang digunakan meliputi:
+Entitas utama pada aplikasi:
 
-- Users
-- Books
-- Authors
-- Categories
-- Category_Book (tabel pivot)
+- `users`
+- `authors`
+- `books`
+- `categories`
+- `book_category` (tabel pivot)
 
 ### Diagram Relasi
 
@@ -475,107 +459,261 @@ erDiagram
     USERS {
         bigint id PK
         string name
-        string email
+        string email UK
+        timestamp email_verified_at
+        string role "default viewer"
         string password
-        string role
+        string remember_token
+        timestamp created_at
+        timestamp updated_at
     }
 
     AUTHORS {
         bigint id PK
         string name
+        timestamp created_at
+        timestamp updated_at
     }
 
     BOOKS {
         bigint id PK
-        bigint author_id FK
+        string isbn UK
         string title
+        bigint author_id FK
+        string publisher
+        year year
+        string cover
         text description
-        string status
+        enum status "available, borrowed"
+        timestamp created_at
+        timestamp updated_at
     }
 
     CATEGORIES {
         bigint id PK
-        string name
+        string name UK
+        timestamp created_at
+        timestamp updated_at
     }
 
-    CATEGORY_BOOK {
+    BOOK_CATEGORY {
+        bigint id PK
         bigint book_id FK
         bigint category_id FK
+        timestamp created_at
+        timestamp updated_at
     }
 
     AUTHORS ||--o{ BOOKS : menulis
-    BOOKS ||--o{ CATEGORY_BOOK : memiliki
-    CATEGORIES ||--o{ CATEGORY_BOOK : mengelompokkan
+    BOOKS ||--o{ BOOK_CATEGORY : memiliki
+    CATEGORIES ||--o{ BOOK_CATEGORY : mengelompokkan
 ```
 
-**Catatan:** Diagram di atas merupakan gambaran konseptual. Sesuaikan nama kolom dan relasi dengan migration yang benar-benar terdapat pada proyek.
+> Pasangan `(book_id, category_id)` pada `book_category` bersifat **unique** sehingga satu buku tidak bisa dimasukkan dua kali ke kategori yang sama. Tabel `users` tidak memiliki foreign key ke tabel lain. Tabel bawaan Laravel (`sessions`, `cache`, `jobs`, dll.) tidak digambar karena bukan bagian dari domain aplikasi.
 
 ### Penjelasan Relasi Antar Tabel
 
-**1. Authors dan Books**
+**1. Authors dan Books (One to Many)**
 
-Relasi one-to-many. Satu penulis dapat memiliki banyak buku, sedangkan satu buku terhubung dengan satu penulis melalui foreign key `author_id`, sesuai rancangan aplikasi.
+Satu penulis dapat memiliki banyak buku, sedangkan satu buku hanya terhubung dengan satu penulis melalui foreign key `books.author_id`. Foreign key memakai `onDelete('cascade')`, sehingga menghapus penulis akan ikut menghapus buku-bukunya.
 
-**2. Books dan Categories**
+- Model `Author`: `hasMany(Book::class)`
+- Model `Book`: `belongsTo(Author::class)`
 
-Relasi many-to-many. Satu buku dapat memiliki beberapa kategori dan satu kategori dapat digunakan oleh beberapa buku.
+**2. Books dan Categories (Many to Many)**
 
-Hubungan tersebut menggunakan tabel pivot `category_book`.
+Satu buku dapat memiliki beberapa kategori dan satu kategori dapat dipakai banyak buku. Relasi ini diwujudkan lewat tabel pivot `book_category` yang menyimpan pasangan `book_id` dan `category_id`.
+
+- Model `Book` dan `Category`: `belongsToMany(...)`
+- Karena nama pivot `book_category` tidak mengikuti konvensi Laravel (`category_book`), nama tabel perlu ditulis eksplisit pada relasi, contoh:
+
+```php
+// app/Models/Book.php
+public function categories()
+{
+    return $this->belongsToMany(Category::class, 'book_category');
+}
+```
 
 **3. Users**
 
-Tabel users menyimpan informasi akun pengguna yang digunakan untuk login ke dalam aplikasi. Kolom role digunakan untuk membedakan hak akses admin, staff, dan viewer.
+Tabel `users` menyimpan akun untuk login. Kolom `role` (default `viewer`) membedakan hak akses admin, staff, dan viewer.
 
 ### 📸 Screenshot 12 – Diagram ERD
 
-**Cara mengambil screenshot:**
 
-1. Buka README pada GitHub setelah diagram Mermaid berhasil dirender, atau buat diagram menggunakan draw.io.
-2. Pastikan seluruh tabel dan garis relasi terlihat.
-3. Ambil screenshot diagram.
-4. Simpan dengan nama `12-erd.png`.
-
-![Diagram ERD](docs/screenshots/12-erd.png)
-
-## 3. Flow Aplikasi (Request hingga Response)
-
-Alur kerja aplikasi Laravel dimulai ketika pengguna mengakses halaman melalui browser.
-
-Tahapan prosesnya adalah:
-
-1. Pengguna mengirimkan request melalui browser.
-2. Request diterima oleh web server.
-3. Laravel memproses request melalui routing.
-4. Middleware melakukan pemeriksaan tertentu, seperti autentikasi.
-5. Policy memeriksa apakah pengguna memiliki izin untuk melakukan tindakan.
-6. Resource Filament menangani proses pengelolaan data.
-7. Model Eloquent berkomunikasi dengan database.
-8. Database mengembalikan data yang diminta.
-9. Laravel memproses hasil dan menghasilkan response.
-10. Response ditampilkan kembali kepada pengguna melalui browser.
-
-### Diagram Flow Aplikasi
-
-```mermaid
-flowchart TD
-    A[Pengguna membuka browser] --> B[Request ke Laravel]
-    B --> C[Routing]
-    C --> D[Middleware / Authentication]
-    D --> E{Sudah login?}
-    E -- Tidak --> F[Halaman Login]
-    E -- Ya --> G[Filament Resource]
-    G --> H[Policy / Authorization]
-    H --> I{Memiliki izin?}
-    I -- Tidak --> J[Akses Ditolak]
-    I -- Ya --> K[Model Eloquent]
-    K --> L[Database]
-    L --> M[Hasil Query]
-    M --> N[Response]
-    N --> O[Halaman ditampilkan di Browser]
-```
+![Diagram ERD](DiagramERD.jpeg)
 
 ---
 
+## 3. Flow Aplikasi (Request hingga Response)
+
+Alur kerja dimulai ketika pengguna mengakses halaman admin (misalnya `/admin/books`) melalui browser.
+
+1. Pengguna mengirim request melalui browser.
+2. Request diterima web server dan diteruskan ke `public/index.php` (entry point Laravel).
+3. Laravel memproses request melalui routing.
+4. Middleware memeriksa session dan autentikasi.
+5. Resource Filament (`BookResource`) menangani halaman yang diminta (komponen Livewire).
+6. Policy memeriksa apakah pengguna memiliki izin untuk tindakan tersebut.
+7. Model Eloquent menyusun query dan berkomunikasi dengan database.
+8. Database mengembalikan data yang diminta.
+9. Data dirender menjadi HTML (Blade bawaan Filament) dan dikirim sebagai response.
+10. Browser menampilkan halaman. Interaksi berikutnya (cari, filter, simpan) dikirim lewat Livewire tanpa memuat ulang seluruh halaman.
+
+### Diagram 1 – Flowchart Alur Request
+
+```mermaid
+flowchart TD
+    A["Pengguna membuka browser"] --> B["Request ke Laravel"]
+    B --> C["Routing"]
+    C --> D["Middleware / Authentication"]
+    D --> E{"Sudah login?"}
+    E -- Tidak --> F["Halaman Login"]
+    E -- Ya --> G["Filament Resource"]
+    G --> H["Policy / Authorization"]
+    H --> I{"Memiliki izin?"}
+    I -- Tidak --> J["Akses Ditolak (403)"]
+    I -- Ya --> K["Model Eloquent"]
+    K --> L[("Database")]
+    L --> M["Hasil Query"]
+    M --> N["Response (HTML)"]
+    N --> O["Halaman ditampilkan di Browser"]
+```
+
+### Diagram 2 – Sequence Diagram (Request hingga Response)
+
+```mermaid
+sequenceDiagram
+    actor U as Pengguna
+    participant B as Browser
+    participant R as Router dan Middleware
+    participant F as Filament Resource (Livewire)
+    participant P as Policy
+    participant M as Model Eloquent
+    participant D as Database
+
+    U->>B: Buka /admin/books
+    B->>R: HTTP GET request
+    R->>R: Cek session dan autentikasi
+    alt Belum login
+        R-->>B: Redirect ke halaman login
+    else Sudah login
+        R->>F: Teruskan ke ListBooks
+        F->>P: viewAny(Book)?
+        alt Tidak punya izin
+            P-->>B: 403 Forbidden
+        else Punya izin
+            P-->>F: Diizinkan
+            F->>M: Book::with(author, categories)
+            M->>D: SELECT ... FROM books
+            D-->>M: Baris data
+            M-->>F: Koleksi model Book
+            F-->>B: Response HTML (tabel buku)
+            B-->>U: Tampilkan daftar buku
+        end
+    end
+```
+
+### Diagram 3 – Alur Tambah Buku (Create)
+
+```mermaid
+flowchart LR
+    A["Klik tombol Tambah Buku"] --> B["Isi form: ISBN, judul, penulis, kategori, cover"]
+    B --> C{"Validasi lolos?"}
+    C -- Tidak --> D["Tampilkan pesan error"]
+    D --> B
+    C -- Ya --> E["Simpan ke tabel books"]
+    E --> F["Simpan relasi ke tabel book_category"]
+    F --> G["Notifikasi berhasil"]
+    G --> H["Kembali ke daftar buku"]
+```
+
+### 📸 Screenshot 13 – Diagram Workflow
+
+
+![Diagram Workflow](DiagramWorkflow.jpeg)
+
+---
+
+## 4. Perbandingan dengan Pendekatan Tradisional
+
+### Filament vs CRUD Manual
+
+Pada pendekatan manual, satu entitas memerlukan migration, model, controller (`index`, `create`, `store`, `show`, `edit`, `update`, `destroy`), route, Form Request, dan beberapa view Blade. Pada Filament, lapisan controller, route, dan view tersebut digantikan oleh satu kelas Resource.
+
+| Aspek | CRUD Manual | CRUD dengan Filament |
+|---|---|---|
+| Jumlah file per entitas | Banyak (controller, request, view, route) | Sedikit (satu Resource dan page bawaannya) |
+| Waktu pengembangan | Lama | Cepat |
+| Tampilan | Dibuat sendiri (HTML/CSS) | Sudah tersedia, responsif, ada dark mode |
+| Pencarian, filter, sorting, pagination | Ditulis sendiri | Cukup dideklarasikan |
+| Upload file dan relasi | Ditulis sendiri | Komponen siap pakai |
+| Autentikasi dan otorisasi | Dirakit sendiri | Terintegrasi dengan panel dan policy |
+| Fleksibilitas desain | Penuh | Terbatas pada kemampuan Filament |
+| Kurva belajar | Memahami MVC dan Blade | Perlu memahami Filament dan Livewire |
+
+### Kelebihan dan Kekurangan
+
+**Filament**
+
+- Kelebihan: pengembangan sangat cepat, tampilan admin konsisten dan modern, fitur umum sudah tersedia, kode lebih ringkas.
+- Kekurangan: kustomisasi mendalam butuh usaha ekstra, bergantung pada paket pihak ketiga dan perubahan versinya, proses di balik layar kurang terlihat oleh pemula, kurang cocok untuk antarmuka publik yang unik.
+
+**CRUD Manual**
+
+- Kelebihan: kontrol penuh atas logika dan tampilan, memperdalam pemahaman MVC, tidak bergantung paket tambahan.
+- Kekurangan: memakan waktu, banyak kode berulang, rawan inkonsistensi, fitur seperti filter dan pagination harus dibangun satu per satu.
+
+### Kapan Menggunakan Filament
+
+| Gunakan Filament | Sebaiknya tidak menggunakan Filament |
+|---|---|
+| Panel admin / back office | Halaman publik dengan desain unik |
+| Aplikasi internal yang dominan CRUD | Alur UI sangat kustom (bukan tabel dan form) |
+| Prototipe atau MVP yang perlu cepat | Tujuan utama belajar dasar MVC dan Blade |
+
+Keduanya dapat digabung: Filament untuk sisi admin dan Blade/frontend kustom untuk sisi pengunjung.
+
+---
+
+## 5. Refleksi Pembelajaran
+
+### Apa yang Dipelajari
+
+- Merancang database relasional dan menuangkannya ke migration Laravel, termasuk relasi one-to-many dan many-to-many dengan tabel pivot.
+- Membuat Filament Resource untuk CRUD lengkap (form, tabel, upload cover, pemilihan relasi).
+- Menerapkan pembatasan akses berdasarkan `role` dengan policy.
+- Mengembangkan skema secara bertahap lewat migration tambahan (`role`, `description`) tanpa merusak tabel yang sudah ada.
+- Mendokumentasikan arsitektur, ERD, dan alur aplikasi.
+
+### Kesulitan yang Dihadapi dan Cara Mengatasinya
+
+| Kesulitan | Cara mengatasi |
+|---|---|
+| Memahami relasi many-to-many dan penamaan tabel pivot | Membaca dokumentasi Eloquent dan menuliskan nama pivot `book_category` secara eksplisit |
+| Error foreign key karena urutan migration | Memastikan `authors` dibuat sebelum `books` lewat urutan timestamp file migration |
+| Menambah kolom pada tabel yang sudah ada | Membuat migration baru dengan `Schema::table`, bukan mengubah migration lama |
+| Mengatur hak akses berdasarkan role | Mempelajari policy dan mengujinya dengan beberapa akun berbeda |
+| Menampilkan gambar cover | Menjalankan `php artisan storage:link` dan memeriksa konfigurasi disk |
+
+> Sesuaikan tabel di atas dengan kendala yang benar-benar dialami.
+
+### Rencana Pengembangan Selanjutnya
+
+- Fitur peminjaman: tabel `members` dan `loans` (tanggal pinjam, jatuh tempo, kembali) agar status buku berubah otomatis.
+- Perhitungan denda keterlambatan.
+- Halaman katalog publik dengan pencarian dan filter kategori.
+- Dashboard statistik dengan widget Filament.
+- Penyempurnaan hak akses per role dengan policy.
+- Ekspor laporan (PDF/Excel) dan pengujian otomatis (Pest/PHPUnit).
+- Deployment ke server agar dapat diakses online.
+
+---
+
+## Kesimpulan
+
+Dengan Laravel dan Filament, aplikasi manajemen buku dapat dibangun lebih cepat tanpa mengorbankan struktur yang rapi. Pemahaman dasar MVC, migration, relasi Eloquent, dan policy tetap penting agar aplikasi mudah dirawat dan dikembangkan.
 # ⚖️ PERBANDINGAN FILAMENT DAN CRUD MANUAL
 
 ## 1. CRUD Menggunakan Filament
