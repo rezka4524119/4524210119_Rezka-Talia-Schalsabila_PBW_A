@@ -539,10 +539,6 @@ public function categories()
 
 Tabel `users` menyimpan akun untuk login. Kolom `role` (default `viewer`) membedakan hak akses admin, staff, dan viewer.
 
-### 📸 Screenshot 12 – Diagram ERD
-
-
-![Diagram ERD](DiagramERD.jpeg)
 
 ---
 
@@ -629,10 +625,7 @@ flowchart LR
     G --> H["Kembali ke daftar buku"]
 ```
 
-### 📸 Screenshot 13 – Diagram Workflow
 
-
-![Diagram Workflow](DiagramWorkflow.jpeg)
 
 ---
 
@@ -849,34 +842,6 @@ Dengan adanya pengembangan tersebut, aplikasi diharapkan dapat menjadi sistem ma
 
 ---
 
-# 📸 DOKUMENTASI PENGUJIAN APLIKASI
-
-Dokumentasi pengujian digunakan untuk menunjukkan bahwa fitur-fitur utama aplikasi telah berjalan sesuai dengan fungsinya.
-
-Pengujian dapat dilakukan menggunakan akun dengan role berbeda.
-
-### Pengujian Hak Akses
-
-| Pengguna | Pengujian yang Dilakukan | Hasil yang Diharapkan |
-|---|---|---|
-| Admin | Create, Read, Update, Delete | Seluruh fitur dapat digunakan |
-| Staff | Create, Read, Update | Tidak dapat menghapus data |
-| Viewer | Read | Hanya dapat melihat data |
-
-### 📸 Screenshot 13 – Pengujian Aplikasi
-
-**Cara mengambil screenshot:**
-
-1. Login menggunakan akun admin, staff, dan viewer secara bergantian.
-2. Uji akses terhadap menu Books.
-3. Pastikan tombol atau tindakan yang tidak diizinkan tidak dapat digunakan.
-4. Ambil screenshot bukti pengujian.
-
-**Simpan gambar dengan nama:** `13-testing.png`
-
-![Pengujian Aplikasi](docs/screenshots/13-testing.png)
-
----
 
 # ✅ KESIMPULAN
 
