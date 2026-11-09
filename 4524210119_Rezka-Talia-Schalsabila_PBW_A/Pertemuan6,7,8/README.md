@@ -346,7 +346,7 @@ Dengan penambahan fitur ini, setiap buku dapat memiliki informasi tambahan yang 
 
 **Simpan gambar dengan nama:** `07-book-description.png`
 
-![Book Description](docs/screenshots/07-book-description.png)
+![Book Description](BookDescription.jpeg)
 
 ## 3. Implementasi Role-Based Access Control
 
@@ -382,7 +382,7 @@ Tahapan pengembangan RBAC meliputi:
 
 **Simpan gambar dengan nama:** `08-role-users.png`
 
-![Role Users](docs/screenshots/08-role-users.png)
+![Role Users](RoluUsers.jpeg)
 
 ## 4. Penambahan Dashboard Widget
 
@@ -416,7 +416,7 @@ Informasi tersebut dapat ditampilkan melalui statistik atau grafik sesuai implem
 
 **Simpan gambar dengan nama:** `09-dashboard-widget.png`
 
-![Dashboard Widget](docs/screenshots/09-dashboard-widget.png)
+![Dashboard Widget](Dashboardwidget.jpeg)
 
 ## 5. Penambahan Kategori Buku
 
@@ -442,7 +442,7 @@ Relasi many-to-many memungkinkan satu buku memiliki lebih dari satu kategori dan
 
 **Simpan gambar dengan nama:** `10-category.png`
 
-![Data Category](docs/screenshots/10-category.png)
+![Data Category](DataCategory.jpeg)
 
 ### 📸 Screenshot 11 – Kategori pada Form Buku
 
@@ -457,7 +457,7 @@ Relasi many-to-many memungkinkan satu buku memiliki lebih dari satu kategori dan
 
 **Simpan gambar dengan nama:** `11-book-category.png`
 
-![Book Category](docs/screenshots/11-book-category.png)
+![Book Category](BookCategory.jpeg)
 
 ---
 
