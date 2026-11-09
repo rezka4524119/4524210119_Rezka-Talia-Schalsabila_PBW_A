@@ -382,7 +382,7 @@ Tahapan pengembangan RBAC meliputi:
 
 **Simpan gambar dengan nama:** `08-role-users.png`
 
-![Role Users](RoluUsers.jpeg)
+![Role Users](RoleUsers.jpeg)
 
 ## 4. Penambahan Dashboard Widget
 
